@@ -39,10 +39,30 @@ set(AJMCacheVarTest ON CACHE BOOL "A variable to search for in CMakeCache")
 
 include(ExternalProject)
 
-# it seems like it isn't copying the contents of "extern" to build; does it expect this project to be in the build directory itself?
-# it executes the CMakeLists.txt file but only on build.
+# (assuming your build directory is "build")
+# - note that this is not looking for a directory in this repository named "extern"
+# - "extern" is not an "output" variable, naturally
+
+# At configure time: (cmake .. in build/)
+# - it creates the "build/extern", "build/extern-build", and "build/extern-stamp" directories 
+#
+# At build time (when you compile Tutorial.sln):
+# - it clones the github repository into build/extern-prefix/extern
+# - it runs CMakeLists.txt in build/extern
+# - It only executes the CMakeLists.txt file but only on build.
+# - Note that the external project does NOT share cache variables with this project, I can't find AJMCacheVarTest in CMakeCache in build\extern-prefix\src\extern-build
+
+# TODO: 
+# - Try a placeholder like <BINARY_DIR>
+# - How does ExternalProject_Add affect CMAKE_MODULE_PATH, if at all?
+# - Should try some cpack stuff, reember that NSIS is "unique"... so try everything in NSIS
+
+message("BINARY_DIR from the main project is " ${BINARY_DIR})
 ExternalProject_Add(
                         "extern" # note that this must be the name of the directory, it's NOT a variable to store something in
                         GIT_REPOSITORY "https://github.com/amelvill-umich/Test"
-                        
+                        CMAKE_ARGS
+                            -DBRACKET_BINARY_DIR=<BINARY_DIR>
+                            -DVAR_BINARY_DIR=${BINARY_DIR}
+                            -DSOMETHING_ELSE="If all else fails, this won't"
 )
