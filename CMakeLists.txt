@@ -17,11 +17,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # Useful for displaying errors, warnings, and debugging
 message ("cxx Flags: " ${CMAKE_CXX_FLAGS})
 
-# nope
-set(TestVariable "pickles")
-message("TestVariable is  <TestVariable>")
 
-message("LANG is " <LANG> ${LANG})
 
 # Sub-directories where more CMakeLists.txt exist
 add_subdirectory(app)
@@ -38,6 +34,11 @@ add_test(AppTest3 ${PROJECT_BINARY_DIR}/bin/app 300)
 set(AJMCacheVarTest ON CACHE BOOL "A variable to search for in CMakeCache")
 
 include(ExternalProject)
+
+# for some reason, the very act of including CPack adds a PACKAGE project to the solution;
+# that happens if CPack is even included in a sub directory...
+include(CPack)
+set( CPACK_GENERATOR NSIS)
 
 # (assuming your build directory is "build")
 # - note that this is not looking for a directory in this repository named "extern"
@@ -59,6 +60,8 @@ include(ExternalProject)
 set(CMAKE_MODULE_PATH "potatoes")
 message("BINARY_DIR from the main project is " ${BINARY_DIR})
 message("CMAKE_MODULE_PATH before externalproject is " ${CMAKE_MODULE_PATH})
+
+# Note that this does not automatically add extern's targets to the install command
 ExternalProject_Add(
                         "extern" # note that this must be the name of the directory, it's NOT a variable to store something in
                         GIT_REPOSITORY "https://github.com/amelvill-umich/Test"

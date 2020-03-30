@@ -19,4 +19,4 @@ set_target_properties(app PROPERTIES
 
 # Adds logic to INSTALL.vcproj to copy app.exe to destination directory
 install (TARGETS app
-         RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/_install)
+         RUNTIME DESTINATION "PicklesAppRuntimeDestination")

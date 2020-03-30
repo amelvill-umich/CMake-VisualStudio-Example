@@ -37,5 +37,5 @@ set_target_properties(math PROPERTIES
 
 # Adds logic to INSTALL.vcproj to copy math.dll to the destination directory
 install (TARGETS math
-         RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/_install
-         LIBRARY DESTINATION ${PROJECT_SOURCE_DIR}/_install)
+         RUNTIME DESTINATION "PicklesMathRuntimeDirectory"
+         LIBRARY DESTINATION "PicklesMathLibraryDirectory")
