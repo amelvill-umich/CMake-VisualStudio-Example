@@ -53,11 +53,12 @@ include(ExternalProject)
 # - Note that the external project does NOT share cache variables with this project, I can't find AJMCacheVarTest in CMakeCache in build\extern-prefix\src\extern-build
 
 # TODO: 
-# - Try a placeholder like <BINARY_DIR>
 # - How does ExternalProject_Add affect CMAKE_MODULE_PATH, if at all?
-# - Should try some cpack stuff, reember that NSIS is "unique"... so try everything in NSIS
+# - Should try some cpack stuff, remember that NSIS is "unique"... so try everything in NSIS
 
+set(CMAKE_MODULE_PATH "potatoes")
 message("BINARY_DIR from the main project is " ${BINARY_DIR})
+message("CMAKE_MODULE_PATH before externalproject is " ${CMAKE_MODULE_PATH})
 ExternalProject_Add(
                         "extern" # note that this must be the name of the directory, it's NOT a variable to store something in
                         GIT_REPOSITORY "https://github.com/amelvill-umich/Test"
@@ -66,3 +67,5 @@ ExternalProject_Add(
                             -DVAR_BINARY_DIR=${BINARY_DIR}
                             -DSOMETHING_ELSE="If all else fails, this won't"
 )
+
+message("CMAKE_MODULE_PATH after externalproject is " ${CMAKE_MODULE_PATH})
